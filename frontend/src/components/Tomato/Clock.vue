@@ -103,7 +103,7 @@ function togglePause() {
         <font-awesome-icon class="icon" icon="fa-solid fa-pause" />
       </button>
       <div class="time">
-        {{ currentMinutes.toFixed(0) }}:{{
+        {{ Math.floor(currentMinutes) }}:{{
           ("0" + (Math.floor(time) % 60)).slice(-2)
         }}
         / {{ minutes }}:00
