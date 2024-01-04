@@ -17,16 +17,21 @@ func main() {
 	// Create application with options
 	err := wails.Run(&options.App{
 		Title:  "tomato",
-		Width:  416,
-		Height: 439,
+		Width:  400,
+		Height: 400,
 		AssetServer: &assetserver.Options{
 			Assets: assets,
 		},
-		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 1},
+		BackgroundColour: &options.RGBA{R: 27, G: 38, B: 54, A: 0},
 		OnStartup:        app.startup,
 		Bind: []interface{}{
 			app,
 		},
+		AlwaysOnTop:     true,
+		DisableResize:   true,
+		Frameless:       true,
+		CSSDragProperty: "widows",
+		CSSDragValue:    "1",
 	})
 
 	if err != nil {
