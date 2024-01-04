@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onUnmounted } from "vue";
 import { set, useLocalStorage } from "@vueuse/core";
 const config = useLocalStorage("config", { work: 1, break: 5 });
 const r = 150;
@@ -41,8 +41,8 @@ async function beep(duration, frequency, volume) {
     };
   });
 }
-async function wait(ms){
-  return new Promise(resolve => setTimeout(() => resolve(), ms));
+async function wait(ms) {
+  return new Promise((resolve) => setTimeout(() => resolve(), ms));
 }
 
 const FREQUENCY = 900;
@@ -50,7 +50,7 @@ const DURATION = 100;
 const PAUSE = 30;
 const BREAK = 300;
 const LONG_BREAK = 1200;
-async function alert(){
+async function alert() {
   await beep(DURATION, FREQUENCY, 0.5);
   await wait(PAUSE);
   await beep(DURATION, FREQUENCY, 0.5);
@@ -68,7 +68,7 @@ async function alert(){
   await beep(DURATION, FREQUENCY, 0.5);
 }
 
-setInterval(async () => {
+const interval = setInterval(async () => {
   if (pause.value) {
     start = Date.now();
     return;
@@ -81,6 +81,9 @@ setInterval(async () => {
     await alert();
   }
 }, 1000);
+onUnmounted(() => {
+  clearInterval(interval);
+});
 function togglePause() {
   pause.value = !pause.value;
 }
@@ -121,6 +124,7 @@ function togglePause() {
   justify-content: center;
   color: white;
 }
+
 .tool {
   position: absolute;
   top: 50%;
@@ -129,26 +133,33 @@ function togglePause() {
   display: flex;
   align-items: center;
 }
+
 svg.clock {
   height: 100%;
   width: 100%;
 }
+
 circle {
   fill: none;
   stroke-width: 20px;
 }
+
 .work circle {
   stroke: #e55;
 }
+
 .break circle {
   stroke: #77c;
 }
+
 circle.base {
   opacity: 0.1;
 }
+
 .icon {
   font-size: 13pt;
 }
+
 .pause {
   background: none;
   border: none;
@@ -156,9 +167,11 @@ circle.base {
   cursor: pointer;
   opacity: 0.5;
 }
+
 .pause:hover {
   opacity: 1;
 }
+
 .paused {
   color: #e55;
   opacity: 1;
