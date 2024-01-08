@@ -45,29 +45,20 @@ async function wait(ms) {
   return new Promise((resolve) => setTimeout(() => resolve(), ms));
 }
 
-const FREQUENCY = 900;
-const DURATION = 100;
-const PAUSE = 30;
+const FREQUENCY = 300;
+const DURATION = 200;
+const PAUSE = 100;
 const BREAK = 300;
 const LONG_BREAK = 1200;
-async function alert() {
-  await beep(DURATION, FREQUENCY, 0.5);
-  await wait(PAUSE);
-  await beep(DURATION, FREQUENCY, 0.5);
-  await wait(PAUSE);
-  await beep(DURATION, FREQUENCY, 0.5);
-  await wait(PAUSE);
-  await beep(DURATION, FREQUENCY, 0.5);
-  await wait(BREAK);
-  await beep(DURATION, FREQUENCY, 0.5);
-  await wait(PAUSE);
-  await beep(DURATION, FREQUENCY, 0.5);
-  await wait(PAUSE);
-  await beep(DURATION, FREQUENCY, 0.5);
-  await wait(PAUSE);
-  await beep(DURATION, FREQUENCY, 0.5);
-}
+const VOLUME = 0.4;
 
+async function alert() {
+  await beep(DURATION, FREQUENCY, VOLUME);
+  await wait(PAUSE);
+  await beep(DURATION, FREQUENCY, VOLUME);
+  await wait(PAUSE);
+}
+alert();
 const interval = setInterval(async () => {
   if (pause.value) {
     start = Date.now();
@@ -92,14 +83,8 @@ function togglePause() {
   <div class="clock">
     <svg :class="status" class="clock">
       <circle cx="200" cy="200" :r="r" class="base" />
-      <circle
-        class="active"
-        cx="200"
-        cy="200"
-        :r="r"
-        :stroke-dashoffset="offset"
-        :stroke-dasharray="drawArc(currentRatio)"
-      />
+      <circle class="active" cx="200" cy="200" :r="r" :stroke-dashoffset="offset"
+        :stroke-dasharray="drawArc(currentRatio)" />
     </svg>
     <div class="tool">
       <button class="pause" @click="togglePause()" :class="{ paused: pause }">
