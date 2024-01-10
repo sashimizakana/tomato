@@ -15,10 +15,16 @@ const breakTime = computed({
   set: (value) => (config.value = { ...config.value, break: value }),
 });
 const alwaysOnTop = computed({
-  get: () => config.value.alwaysOnTop,
+  get: () => config.value?.alwaysOnTop || true,
   set: (value) => {
     config.value = { ...config.value, alwaysOnTop: value };
     window.runtime.WindowSetAlwaysOnTop(value);
+  },
+});
+const noSound = computed({
+  get: () => config.value?.noSound || false,
+  set: (value) => {
+    config.value = { ...config.value, noSound: value };
   },
 });
 </script>
@@ -58,6 +64,17 @@ const alwaysOnTop = computed({
           v-model="alwaysOnTop"
           type="checkbox"
           id="alwaysOnTop"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label for="noSound">No sound</label>
+      <div class="checkbox">
+        <input
+          class="check"
+          v-model="noSound"
+          type="checkbox"
+          id="noSound"
         />
       </div>
     </div>

@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onUnmounted } from "vue";
 import { set, useLocalStorage } from "@vueuse/core";
-const config = useLocalStorage("config", { work: 1, break: 5 });
+const config = useLocalStorage("config", { work: 25, break: 5, alwaysOnTop: true, noSound: false });
 const r = 150;
 const d = r * 2;
 const c = d * Math.PI;
@@ -62,6 +62,7 @@ async function alert() {
   await beep(DURATION, FREQUENCY, VOLUME);
   await wait(PAUSE);
 }
+console.log(config.value);
 const interval = setInterval(async () => {
   if (pause.value) {
     start = Date.now();
@@ -72,6 +73,9 @@ const interval = setInterval(async () => {
   if (minutes.value * 60 <= time.value) {
     status.value = status.value === "work" ? "break" : "work";
     time.value = 0;
+    if(config.value.noSound){
+      return;
+    }
     await alert();
   }
 }, 1000);
