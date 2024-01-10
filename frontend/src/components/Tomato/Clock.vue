@@ -58,7 +58,6 @@ async function alert() {
   await beep(DURATION, FREQUENCY, VOLUME);
   await wait(PAUSE);
 }
-alert();
 const interval = setInterval(async () => {
   if (pause.value) {
     start = Date.now();
