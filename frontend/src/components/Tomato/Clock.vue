@@ -52,6 +52,10 @@ const BREAK = 300;
 const LONG_BREAK = 1200;
 const VOLUME = 0.4;
 
+function reset(){
+  time.value = 0;
+}
+
 async function alert() {
   await beep(DURATION, FREQUENCY, VOLUME);
   await wait(PAUSE);
@@ -96,6 +100,9 @@ function togglePause() {
         }}
         / {{ minutes }}:00
       </div>
+      <button @click="reset">
+        <font-awesome-icon class="icon" icon="fa-solid fa-rotate-left" />
+      </button>
     </div>
   </div>
 </template>
@@ -145,12 +152,16 @@ circle.base {
   font-size: 13pt;
 }
 
-.status {
+button {
   background: none;
   border: none;
-  color: #77c;
   cursor: pointer;
   opacity: 0.8;
+  color:white;
+}
+
+.status {
+  color: #77c;
 }
 
 .status:hover {
