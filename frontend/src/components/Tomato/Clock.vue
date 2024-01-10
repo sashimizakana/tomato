@@ -1,14 +1,8 @@
 <script setup>
 import { ref, computed, onUnmounted } from "vue";
-import { useLocalStorage } from "@vueuse/core";
 import { Message } from "@wails/App";
-const config = useLocalStorage("config", {
-  work: 25,
-  break: 5,
-  alwaysOnTop: true,
-  noSound: false,
-  notification: false,
-});
+import { useConfigStore } from "@/store/config";
+const configStore = useConfigStore();
 const r = 150;
 const d = r * 2;
 const c = d * Math.PI;
@@ -23,7 +17,7 @@ const currentMinutes = computed(() => {
   return time.value / 60;
 });
 const minutes = computed(() => {
-  return status.value === "work" ? config.value.work : config.value.break;
+  return status.value === "work" ? configStore.get('work') : configStore.get('break');
 });
 const currentRatio = computed(() => {
   return currentMinutes.value / minutes.value;
@@ -79,14 +73,14 @@ const interval = setInterval(async () => {
   if (minutes.value * 60 <= time.value) {
     status.value = status.value === "work" ? "break" : "work";
     time.value = 0;
-    if (config.value.notification) {
+    if (configStore.get('notification')) {
       Message(
         status.value === "work"
           ? "作業時間が開始しました"
           : "休憩時間が開始しました"
       );
     }
-    if (!config.value.noSound) {
+    if (!configStore.get('noSound')) {
       await alert();
     }
   }

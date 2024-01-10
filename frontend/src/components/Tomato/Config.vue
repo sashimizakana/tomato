@@ -1,39 +1,29 @@
 <script setup>
-import { useLocalStorage } from "@vueuse/core";
 import { computed } from "vue";
-
-const config = useLocalStorage("config", {
-  work: 25,
-  break: 5,
-  alwaysOnTop: true,
-  noSound: false,
-});
+import { useConfigStore } from "@/store/config";
+const configStore = useConfigStore()
 const workTime = computed({
-  get: () => config.value?.work,
-  set: (value) => (config.value = { ...config.value, work: value }),
+  get: () => configStore.get('work',25),
+  set: (value) => configStore.set('work',value),
 });
 const breakTime = computed({
-  get: () => config.value?.break,
-  set: (value) => (config.value = { ...config.value, break: value }),
+  get: () => configStore.get('break',5),
+  set: (value) => configStore.set('break',value)
 });
 const alwaysOnTop = computed({
-  get: () => config.value?.alwaysOnTop || true,
+  get: () => configStore.get('alwaysOnTop',true),
   set: (value) => {
-    config.value = { ...config.value, alwaysOnTop: value };
+    configStore.set('alwaysOnTop',value)
     window.runtime.WindowSetAlwaysOnTop(value);
   },
 });
 const noSound = computed({
-  get: () => config.value?.noSound || false,
-  set: (value) => {
-    config.value = { ...config.value, noSound: value };
-  },
+  get: () => configStore.get('noSound',false),
+  set: (value) => configStore.set('noSound',value)
 });
 const notification = computed({
-  get: () => config.value?.notification || false,
-  set: (value) => {
-    config.value = { ...config.value, notification: value };
-  },
+  get: () => configStore.get('notification',false),
+  set: (value) => configStore.set('notification',value)
 });
 </script>
 <template>

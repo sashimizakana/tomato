@@ -2,7 +2,8 @@
 import { ref } from "vue";
 import Config from "./Tomato/Config.vue";
 import Clock from "./Tomato/Clock.vue";
-import { useLocalStorage } from "@vueuse/core";
+import { useConfigStore } from "@/store/config";
+const configStore = useConfigStore();
 const configOpen = ref(false);
 function quit(){
   window.runtime.Quit();
@@ -13,12 +14,7 @@ function toggleConfig(){
 function minimise(){
   window.runtime.WindowMinimise();
 }
-const configStorage = useLocalStorage("config", {
-  work: 25,
-  break: 5,
-  alwaysOnTop: true,
-});
-if(!configStorage.alwaysOnTop){
+if(!configStore.get('alwaysOnTop',true)){
   window.runtime.WindowSetAlwaysOnTop(false);
 }
 </script>
