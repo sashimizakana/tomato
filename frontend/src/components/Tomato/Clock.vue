@@ -21,7 +21,7 @@ const minutes = computed(() => {
 const currentRatio = computed(() => {
   return currentMinutes.value / minutes.value;
 });
-const pause = ref(false);
+const pause = ref(true);
 let start = Date.now();
 
 async function beep(duration, frequency, volume) {
@@ -86,8 +86,9 @@ function togglePause() {
         :stroke-dasharray="drawArc(currentRatio)" />
     </svg>
     <div class="tool">
-      <button class="pause" @click="togglePause()" :class="{ paused: pause }">
-        <font-awesome-icon class="icon" icon="fa-solid fa-pause" />
+      <button class="status" @click="togglePause()" :class="{ paused: pause }">
+        <font-awesome-icon v-if="pause" class="icon" icon="fa-solid fa-pause" />
+        <font-awesome-icon v-else class="icon" icon="fa-solid fa-play" />
       </button>
       <div class="time">
         {{ Math.floor(currentMinutes) }}:{{
@@ -144,19 +145,19 @@ circle.base {
   font-size: 13pt;
 }
 
-.pause {
+.status {
   background: none;
   border: none;
-  color: white;
+  color: #77c;
   cursor: pointer;
-  opacity: 0.5;
+  opacity: 0.8;
 }
 
-.pause:hover {
+.status:hover {
   opacity: 1;
 }
 
-.paused {
+.status.paused {
   color: #e55;
   opacity: 1;
 }

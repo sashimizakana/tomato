@@ -8,12 +8,13 @@ import { library } from '@fortawesome/fontawesome-svg-core'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 /* import specific icons */
-import { faGear,faPause,faXmark,faWindowMinimize } from '@fortawesome/free-solid-svg-icons'
+import { faGear,faPause,faXmark,faWindowMinimize,faPlay } from '@fortawesome/free-solid-svg-icons'
 
 /* add icons to the library */
 library.add(faGear)
 library.add(faPause)
 library.add(faXmark)
 library.add(faWindowMinimize)
+library.add(faPlay)
 
 createApp(App).component('font-awesome-icon', FontAwesomeIcon).mount('#app')
