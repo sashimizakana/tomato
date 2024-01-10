@@ -29,6 +29,12 @@ const noSound = computed({
     config.value = { ...config.value, noSound: value };
   },
 });
+const notification = computed({
+  get: () => config.value?.notification || false,
+  set: (value) => {
+    config.value = { ...config.value, notification: value };
+  },
+});
 </script>
 <template>
   <div class="config">
@@ -77,6 +83,17 @@ const noSound = computed({
           v-model="noSound"
           type="checkbox"
           id="noSound"
+        />
+      </div>
+    </div>
+    <div class="row">
+      <label for="notification">Desktop notification</label>
+      <div class="checkbox">
+        <input
+          class="check"
+          v-model="notification"
+          type="checkbox"
+          id="notification"
         />
       </div>
     </div>

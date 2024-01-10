@@ -2,7 +2,11 @@ module changeme
 
 go 1.18
 
-require github.com/wailsapp/wails/v2 v2.7.1
+require (
+	github.com/wailsapp/wails/v2 v2.7.1
+	golang.org/x/text v0.13.0
+	gopkg.in/toast.v1 v1.0.0-20180812000517-0a84660828b2
+)
 
 require (
 	github.com/bep/debounce v1.2.1 // indirect
@@ -18,6 +22,7 @@ require (
 	github.com/leaanthony/u v1.1.0 // indirect
 	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.19 // indirect
+	github.com/nu7hatch/gouuid v0.0.0-20131221200532-179d4d0c4d8d // indirect
 	github.com/pkg/browser v0.0.0-20210911075715-681adbf594b8 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rivo/uniseg v0.4.4 // indirect
@@ -30,8 +35,7 @@ require (
 	golang.org/x/crypto v0.14.0 // indirect
 	golang.org/x/exp v0.0.0-20230522175609-2e198f4a06a1 // indirect
 	golang.org/x/net v0.17.0 // indirect
-	golang.org/x/sys v0.13.0 // indirect
-	golang.org/x/text v0.13.0 // indirect
+	golang.org/x/sys v0.16.0 // indirect
 )
 
 // replace github.com/wailsapp/wails/v2 v2.7.1 => C:\Users\配信用\go\pkg\mod

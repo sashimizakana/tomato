@@ -1,7 +1,14 @@
 <script setup>
 import { ref, computed, onUnmounted } from "vue";
-import { set, useLocalStorage } from "@vueuse/core";
-const config = useLocalStorage("config", { work: 25, break: 5, alwaysOnTop: true, noSound: false });
+import { useLocalStorage } from "@vueuse/core";
+import { Message } from "../../../wailsjs/go/main/App";
+const config = useLocalStorage("config", {
+  work: 25,
+  break: 5,
+  alwaysOnTop: true,
+  noSound: false,
+  notification: false,
+});
 const r = 150;
 const d = r * 2;
 const c = d * Math.PI;
@@ -52,7 +59,7 @@ const BREAK = 300;
 const LONG_BREAK = 1200;
 const VOLUME = 0.4;
 
-function reset(){
+function reset() {
   time.value = 0;
 }
 
@@ -72,10 +79,16 @@ const interval = setInterval(async () => {
   if (minutes.value * 60 <= time.value) {
     status.value = status.value === "work" ? "break" : "work";
     time.value = 0;
-    if(config.value.noSound){
-      return;
+    if (config.value.notification) {
+      Message(
+        status.value === "work"
+          ? "作業時間が開始しました"
+          : "休憩時間が開始しました"
+      );
     }
-    await alert();
+    if (!config.value.noSound) {
+      await alert();
+    }
   }
 }, 100);
 onUnmounted(() => {
@@ -89,8 +102,14 @@ function togglePause() {
   <div class="clock">
     <svg :class="status" class="clock">
       <circle cx="200" cy="200" :r="r" class="base" />
-      <circle class="active" cx="200" cy="200" :r="r" :stroke-dashoffset="offset"
-        :stroke-dasharray="drawArc(currentRatio)" />
+      <circle
+        class="active"
+        cx="200"
+        cy="200"
+        :r="r"
+        :stroke-dashoffset="offset"
+        :stroke-dasharray="drawArc(currentRatio)"
+      />
     </svg>
     <div class="tool">
       <button class="status" @click="togglePause()" :class="{ paused: pause }">
@@ -160,7 +179,7 @@ button {
   border: none;
   cursor: pointer;
   opacity: 0.8;
-  color:white;
+  color: white;
 }
 
 .status {
