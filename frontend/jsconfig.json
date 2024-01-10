@@ -1,0 +1,10 @@
+{
+  "compilerOptions": {
+      "baseUrl": ".",
+      "paths": {
+          "@/*": ["src/*"],
+           "@wails/*": ["wailsjs/go/main/*"]
+      }
+  },
+  "exclude": ["node_modules", "public"]
+}
