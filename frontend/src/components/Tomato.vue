@@ -9,6 +9,9 @@ function quit(){
 function toggleConfig(){
   configOpen.value = !configOpen.value
 }
+function minimise(){
+  window.runtime.WindowMinimise();
+}
 </script>
 <template>
   <div class="tomato">
@@ -17,6 +20,9 @@ function toggleConfig(){
     <div class="tools">
       <button @click="toggleConfig">
         <font-awesome-icon icon="fa-solid fa-gear" />
+      </button>
+      <button @click="minimise">
+        <font-awesome-icon icon="fa-solid fa-window-minimize" />
       </button>
       <button @click="quit">
         <font-awesome-icon icon="fa-solid fa-xmark" />
