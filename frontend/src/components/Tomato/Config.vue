@@ -1,10 +1,12 @@
 <script setup>
 import { useLocalStorage } from "@vueuse/core";
 import { computed } from "vue";
+
 const config = useLocalStorage("config", {
   work: 25,
   break: 5,
   alwaysOnTop: true,
+  noSound: false,
 });
 const workTime = computed({
   get: () => config.value?.work,
