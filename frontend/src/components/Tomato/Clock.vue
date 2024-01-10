@@ -62,7 +62,6 @@ async function alert() {
   await beep(DURATION, FREQUENCY, VOLUME);
   await wait(PAUSE);
 }
-console.log(config.value);
 const interval = setInterval(async () => {
   if (pause.value) {
     start = Date.now();
@@ -78,7 +77,7 @@ const interval = setInterval(async () => {
     }
     await alert();
   }
-}, 1000);
+}, 100);
 onUnmounted(() => {
   clearInterval(interval);
 });
