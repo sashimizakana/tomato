@@ -1,7 +1,7 @@
 <script setup>
 import { ref, computed, onUnmounted } from "vue";
 import { useLocalStorage } from "@vueuse/core";
-import { Message } from "../../../wailsjs/go/main/App";
+import { Message } from "@wails/App";
 const config = useLocalStorage("config", {
   work: 25,
   break: 5,
