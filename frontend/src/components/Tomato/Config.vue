@@ -30,7 +30,7 @@ const notification = computed({
   <div class="config">
     <div class="row">
       <label for="work">Work</label>
-      <div>
+      <div style="--wails-draggable:no-drag">
         <input
           v-model="workTime"
           class="number"
@@ -43,7 +43,7 @@ const notification = computed({
     </div>
     <div class="row">
       <label for="break">Break</label>
-      <div>
+      <div style="--wails-draggable:no-drag">
         <input
           v-model="breakTime"
           class="number"
@@ -56,7 +56,7 @@ const notification = computed({
     </div>
     <div class="row">
       <label for="alwaysOnTop">Always on top</label>
-      <div class="checkbox">
+      <div class="checkbox" style="--wails-draggable:no-drag">
         <input
           class="check"
           v-model="alwaysOnTop"
@@ -67,7 +67,7 @@ const notification = computed({
     </div>
     <div class="row">
       <label for="noSound">No sound</label>
-      <div class="checkbox">
+      <div class="checkbox" style="--wails-draggable:no-drag">
         <input
           class="check"
           v-model="noSound"
@@ -78,7 +78,7 @@ const notification = computed({
     </div>
     <div class="row">
       <label for="notification">Desktop notification</label>
-      <div class="checkbox">
+      <div class="checkbox" style="--wails-draggable:no-drag">
         <input
           class="check"
           v-model="notification"

@@ -22,7 +22,7 @@ if(!configStore.get('alwaysOnTop',true)){
   <div class="tomato">
     <Config v-if="configOpen"></Config>
     <Clock v-else></Clock>
-    <div class="tools">
+    <div class="tools" style="--wails-draggable:no-drag">
       <button @click="toggleConfig">
         <font-awesome-icon icon="fa-solid fa-gear" />
       </button>

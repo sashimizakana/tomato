@@ -27,11 +27,9 @@ func main() {
 		Bind: []interface{}{
 			app,
 		},
-		AlwaysOnTop:     true,
-		DisableResize:   true,
-		Frameless:       true,
-		CSSDragProperty: "widows",
-		CSSDragValue:    "1",
+		AlwaysOnTop:   true,
+		DisableResize: true,
+		Frameless:     true,
 	})
 
 	if err != nil {

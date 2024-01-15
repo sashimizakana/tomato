@@ -105,7 +105,7 @@ function togglePause() {
         :stroke-dasharray="drawArc(currentRatio)"
       />
     </svg>
-    <div class="tool">
+    <div class="tool" style="--wails-draggable:no-drag">
       <button class="status" @click="togglePause()" :class="{ paused: pause }">
         <font-awesome-icon v-if="pause" class="icon" icon="fa-solid fa-pause" />
         <font-awesome-icon v-else class="icon" icon="fa-solid fa-play" />
