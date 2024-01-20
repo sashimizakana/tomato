@@ -1,7 +1,9 @@
 <script setup>
-import { ref, computed, onUnmounted } from "vue";
+import { ref, computed, onUnmounted, watch } from "vue";
 import { Message } from "@wails/App";
 import { useConfigStore } from "@/store/config";
+import { useTimerStore } from "@/store/timer";
+import { alert } from "@/lib/beep";
 const configStore = useConfigStore();
 const r = 150;
 const d = r * 2;
@@ -11,110 +13,55 @@ function drawArc(ratio) {
   const line = c * ratio;
   return `${line}, ${c - line}`;
 }
-const status = ref("work");
-const time = ref(0);
+const timerStore = useTimerStore();
+const time = computed(() => timerStore.time);
+const state = computed(() => timerStore.state);
+const paused = computed(() => timerStore.paused);
 const currentMinutes = computed(() => {
   return time.value / 60;
 });
-const minutes = computed(() => {
-  return status.value === "work" ? configStore.get('work') : configStore.get('break');
+const currentLimitMinutes = computed(() => {
+  return timerStore.currentLimitMinutes;
 });
 const currentRatio = computed(() => {
-  return currentMinutes.value / minutes.value;
+  return currentMinutes.value / currentLimitMinutes.value;
 });
-const pause = ref(true);
-let start = Date.now();
-
-async function beep(duration, frequency, volume) {
-  const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-  const oscillator = audioContext.createOscillator();
-  const gainNode = audioContext.createGain();
-  oscillator.connect(gainNode);
-  gainNode.connect(audioContext.destination);
-  gainNode.gain.value = volume;
-  oscillator.frequency.value = frequency;
-  oscillator.type = "sine";
-  oscillator.start(audioContext.currentTime);
-  oscillator.stop(audioContext.currentTime + duration / 1000);
-  return new Promise((resolve) => {
-    oscillator.onended = () => {
-      resolve();
-    };
-  });
-}
-async function wait(ms) {
-  return new Promise((resolve) => setTimeout(() => resolve(), ms));
-}
-
-const FREQUENCY = 300;
-const DURATION = 200;
-const PAUSE = 100;
-const BREAK = 300;
-const LONG_BREAK = 1200;
-const VOLUME = 0.4;
-
 function reset() {
-  time.value = 0;
+  timerStore.reset();
 }
-
-async function alert() {
-  await beep(DURATION, FREQUENCY, VOLUME);
-  await wait(PAUSE);
-  await beep(DURATION, FREQUENCY, VOLUME);
-  await wait(PAUSE);
-}
-const interval = setInterval(async () => {
-  if (pause.value) {
-    start = Date.now();
-    return;
+watch(state, async (value) => {
+  if (configStore.get('notification')) {
+    Message(
+      value === "work"
+        ? "作業時間が開始しました"
+        : "休憩時間が開始しました"
+    );
   }
-  time.value += (Date.now() - start) / 1000;
-  start = Date.now();
-  if (minutes.value * 60 <= time.value) {
-    status.value = status.value === "work" ? "break" : "work";
-    time.value = 0;
-    if (configStore.get('notification')) {
-      Message(
-        status.value === "work"
-          ? "作業時間が開始しました"
-          : "休憩時間が開始しました"
-      );
-    }
-    if (!configStore.get('noSound')) {
-      await alert();
-    }
+  if (!configStore.get('noSound')) {
+    await alert();
   }
-}, 100);
-onUnmounted(() => {
-  clearInterval(interval);
 });
-function togglePause() {
-  pause.value = !pause.value;
+function togglePaused() {
+  timerStore.togglePaused();
 }
 </script>
 <template>
   <div class="clock">
-    <svg :class="status" class="clock">
+    <svg :class="state" class="clock">
       <circle cx="200" cy="200" :r="r" class="base" />
-      <circle
-        class="active"
-        cx="200"
-        cy="200"
-        :r="r"
-        :stroke-dashoffset="offset"
-        :stroke-dasharray="drawArc(currentRatio)"
-      />
+      <circle class="active" cx="200" cy="200" :r="r" :stroke-dashoffset="offset"
+        :stroke-dasharray="drawArc(currentRatio)" />
     </svg>
     <div class="tool" style="--wails-draggable:no-drag">
-      <button class="status" @click="togglePause()" :class="{ paused: pause }">
-        <font-awesome-icon v-if="pause" class="icon" icon="fa-solid fa-pause" />
+      <button class="status" @click="togglePaused()" :class="{ paused }">
+        <font-awesome-icon v-if="paused" class="icon" icon="fa-solid fa-pause" />
         <font-awesome-icon v-else class="icon" icon="fa-solid fa-play" />
       </button>
       <div class="time">
         {{ Math.floor(currentMinutes) }}:{{
           ("0" + (Math.floor(time) % 60)).slice(-2)
         }}
-        / {{ minutes }}:00
+        / {{ Math.floor(currentLimitMinutes) }}:00
       </div>
       <button @click="reset">
         <font-awesome-icon class="icon" icon="fa-solid fa-rotate-left" />
