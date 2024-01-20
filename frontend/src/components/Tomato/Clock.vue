@@ -44,6 +44,9 @@ watch(state, async (value) => {
 function togglePaused() {
   timerStore.togglePaused();
 }
+function toggle() {
+  timerStore.toggleState();
+}
 </script>
 <template>
   <div class="clock">
@@ -63,9 +66,14 @@ function togglePaused() {
         }}
         / {{ Math.floor(currentLimitMinutes) }}:00
       </div>
-      <button @click="reset">
-        <font-awesome-icon class="icon" icon="fa-solid fa-rotate-left" />
-      </button>
+      <div class="changes">
+        <button @click="reset">
+          <font-awesome-icon class="icon" icon="fa-solid fa-rotate-left" />
+        </button>
+        <button @click="toggle">
+          <font-awesome-icon class="icon" icon="fa-solid fa-arrow-right-arrow-left" />
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -121,10 +129,12 @@ button {
   cursor: pointer;
   opacity: 0.8;
   color: white;
+  padding: 0.2rem;
 }
 
 .status {
   color: #77c;
+  margin-right: 5px;
 }
 
 .status:hover {
@@ -134,5 +144,13 @@ button {
 .status.paused {
   color: #e55;
   opacity: 1;
+}
+
+.changes {
+  display: flex;
+  gap: 0px;
+  margin-left: 5px;
+  vertical-align: top;
+  align-items: center;
 }
 </style>
